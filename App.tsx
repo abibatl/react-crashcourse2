@@ -1,20 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, Text } from 'react-native';
+import HelloCard from './components/Hellocard';
 
-export default function App() {
+export default function Home() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ padding: 40 }}>
+      <Text style={{ 
+        fontSize: 24, 
+        fontWeight: 'bold' 
+        }}>
+          Staff Check-In
+      </Text>
+      <Text>By: Abibat Lateef</Text>
+      <HelloCard name="Abibat" />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
