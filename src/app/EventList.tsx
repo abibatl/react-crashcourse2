@@ -1,5 +1,7 @@
-import {Text, View, FlatList, } from 'react-native';
+import {Text, View, FlatList, Pressable, Button } from 'react-native';
 import EventCard from '../components/EventCard';
+import {useState} from 'react'; 
+import { router } from 'expo-router';
 
 export default function EventList() {
    const events= [
@@ -11,13 +13,35 @@ export default function EventList() {
     {id: '6', name: 'Art Social', date: '2025-01-15', location: 'City Streets'},
     ]  
 
+    const [selectedEventId, setSelectedEventId] = useState<string | null>(null); /*string | null is typescript that means id can either be a string or a null */
+    const selectedEvent = events.find(event => event.id === selectedEventId); //finding the selected event based on the id
+
     return (
-        <View>
+        <View> 
+            <Text style={{ fontSize: 16, marginBottom: 10}}>    
+                selected: {selectedEvent ? selectedEvent.name : 'none'}
+            </Text>
+
+            {selectedEvent && (  //renders button only if an event is selected
+                <Button
+                    title = "Go to Event Home"
+                    onPress={() => router.push({ pathname: '/EventHome', params: { id: selectedEventId } })}>
+                </Button>
+            )}
             <FlatList
-            data={events}
-            renderItem={({item}) => <EventCard name={item.name} date={item.date} location={item.location} />}
-            keyExtractor={(item) => item.id}
-            ListEmptyComponent={<Text>No events available</Text>}
+                data={events}
+                renderItem={({item}) =>(
+                <Pressable onPress={() => setSelectedEventId(item.id)}>
+                    <View style={{
+                        backgroundColor: item.id === selectedEventId ? '#9bb9ff' : 'white',
+                    }}>
+                    <EventCard name={item.name} date={item.date} location={item.location} />
+                    </View>
+                </Pressable>
+            )}
+            
+                keyExtractor={(item) => item.id}
+                ListEmptyComponent={<Text>No events available</Text>}
         />
         </View>
     );
