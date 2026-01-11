@@ -1,14 +1,33 @@
 import { View, Text } from 'react-native';
 import HelloCard from '../components/HelloCard';
-import {Link, useRouter} from 'expo-router';
+import {router, useRouter} from 'expo-router';
 import { Button } from 'react-native';
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Home() {
-  const router = useRouter();
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem('qrToken');
+        if (token) {
+          router.replace(`/myqr?token=${token}`);
+        } else {
+          router.replace('/register');
+        }
+      } catch (error) {
+        console.log('Error loading token:', error);
+        router.replace('/register');
+      }
+    };
+    
+    checkToken();
+  }, []);
 
   return (
     <View style={{ padding: 40 }}>
+      <Text>Loading...</Text>
       <Text style={{ 
         fontSize: 24, 
         fontWeight: 'bold' 

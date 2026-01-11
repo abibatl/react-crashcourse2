@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import {router, useRouter} from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Register(){ 
     const router = useRouter();
@@ -13,7 +14,7 @@ export default function Register(){
     const [phoneError, setPhoneError] = useState('');
     const [emailError, setEmailError] = useState('');
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setNameError('');
         setPhoneError('');
         setEmailError('');
@@ -33,15 +34,19 @@ export default function Register(){
             hasError = true;
         }
         if (!hasError) {
-            const token = 'QR_TEST_${DATE.NOW()}'; 
+            const token = `QR_TEST_${Date.now()}`;
             router.push({
                 pathname: '/myqr',
                 params: {token}
             })
-        }
-
-
-    }
+            try {
+                await AsyncStorage.setItem('qrToken', token);
+                router.push(`/myqr?token=${token}`);
+                } catch (error) {
+                console.log('Error saving token:', error);
+                }
+         }
+    };
 
 
     return(
