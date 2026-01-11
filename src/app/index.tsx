@@ -20,6 +20,11 @@ export default function Home() {
       <Button 
         title="Go to Event List" 
         onPress={() => router.push('/EventList')} />
+      <View style= {{ marginTop: 20 }}>
+        <Button 
+          title="Register Here" 
+          onPress={() => router.push('/register')}/>
+      </View>
     </View>
     
   );

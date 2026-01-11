@@ -35,7 +35,7 @@ export default function Register(){
         if (!hasError) {
             const token = 'QR_TEST_${DATE.NOW()}'; 
             router.push({
-                pathname: '/MyQR',
+                pathname: '/myqr',
                 params: {token}
             })
         }
